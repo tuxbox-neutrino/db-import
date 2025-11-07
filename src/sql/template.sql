@@ -1,7 +1,7 @@
 START TRANSACTION;
 SET autocommit = 0;
 DROP DATABASE IF EXISTS `@@@db_template@@@`;
-CREATE DATABASE `@@@db_template@@@` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE `@@@db_template@@@` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `@@@db_template@@@`;
 
 CREATE TABLE `@@@tab_channelinfo@@@` (
@@ -11,7 +11,7 @@ CREATE TABLE `@@@tab_channelinfo@@@` (
   `latest` int(11) DEFAULT NULL,
   `oldest` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `@@@tab_version@@@` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -23,7 +23,7 @@ CREATE TABLE `@@@tab_version@@@` (
   `progname` varchar(256) DEFAULT NULL,
   `progversion` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `@@@tab_video@@@` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -48,6 +48,6 @@ CREATE TABLE `@@@tab_video@@@` (
   `new_entry` tinyint(1) DEFAULT NULL,
   `update` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 COMMIT;

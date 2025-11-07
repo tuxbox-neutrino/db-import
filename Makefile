@@ -174,7 +174,7 @@ build/src/%.o: src/%.cpp
 $(BUILD_DIR)/$(PROGNAME): $(PROG_OBJS)
 	@if ! test -d $$(dirname $@); then mkdir -p $$(dirname $@); fi;
 	@if test "$(quiet)" = "@"; then echo "$(LNKX) *.o => $@"; fi;
-	$(quiet)$(LD) $(LDFLAGS) $(PROG_OBJS) -o $@
+	$(quiet)$(LD) $(PROG_OBJS) $(LDFLAGS) -o $@
 
 install: all
 	@if test "$(DESTDIR)" = ""; then \

@@ -42,6 +42,7 @@
 #include <cassert>
 #include <exception>
 #include <iomanip>
+#include <sstream>
 
 #include "sql.h"
 #include "mv2mariadb.h"
@@ -61,6 +62,7 @@ const char*		g_dbVersion;
 string			g_mvVersion;
 time_t			g_mvDate;
 string			g_passwordFile;
+string			g_mysqlHost;
 
 void myExit(int val);
 
@@ -184,6 +186,7 @@ int CMV2Mysql::loadSetup(string fname)
 	g_settings.videoDb_TableVideo		= configFile.getString("videoDb_TableVideo",       "video");
 	g_settings.videoDb_TableInfo		= configFile.getString("videoDb_TableInfo",        "channelinfo");
 	g_settings.videoDb_TableVersion		= configFile.getString("videoDb_TableVersion",     "version");
+	g_settings.mysqlHost			= configFile.getString("mysqlHost",                "db");
 	VIDEO_DB_TMP_1				= g_settings.videoDbTmp1;
 	VIDEO_DB				= g_settings.videoDb;
 	if (g_settings.testMode) {
@@ -221,6 +224,7 @@ void CMV2Mysql::saveSetup(string fname, bool quiet/*=false*/)
 	configFile.setString("videoDb_TableVideo",       g_settings.videoDb_TableVideo);
 	configFile.setString("videoDb_TableInfo",        g_settings.videoDb_TableInfo);
 	configFile.setString("videoDb_TableVersion",     g_settings.videoDb_TableVersion);
+	configFile.setString("mysqlHost",                g_settings.mysqlHost);
 
 	/* download server */
 	saveDownloadServerSetup();
@@ -351,6 +355,7 @@ int CMV2Mysql::run(int argc, char *argv[])
 		g_passwordFile = g_settings.passwordFile;
 	else
 		g_passwordFile = path0 + "/" + g_settings.passwordFile;
+	g_mysqlHost = g_settings.mysqlHost;
 
 	csql = new CSql();
 	multiQuery = csql->multiQuery;

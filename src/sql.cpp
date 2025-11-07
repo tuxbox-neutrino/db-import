@@ -46,6 +46,7 @@ extern string			g_mvVersion;
 extern time_t			g_mvDate;
 extern bool			g_debugPrint;
 extern string			g_passwordFile;
+extern string			g_mysqlHost;
 
 extern void myExit(int val);
 
@@ -70,7 +71,7 @@ void CSql::Init()
 
 	multiQuery			= true;
 	mysqlCon			= NULL;
-	dbDefaultCharacterSet		= "DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci";
+	dbDefaultCharacterSet		= "DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
 }
 
 CSql::~CSql()
@@ -126,10 +127,11 @@ bool CSql::connectMysql()
 	if (multiQuery)
 		flags |= CLIENT_MULTI_STATEMENTS;
 //	flags |= CLIENT_COMPRESS;
-	if (!mysql_real_connect(mysqlCon, "127.0.0.1", sqlUser.c_str(), sqlPW.c_str(), NULL, 3306, NULL, flags))
+	const char* host = g_mysqlHost.empty() ? "127.0.0.1" : g_mysqlHost.c_str();
+	if (!mysql_real_connect(mysqlCon, host, sqlUser.c_str(), sqlPW.c_str(), NULL, 3306, NULL, flags))
 		show_error(__func__, __LINE__);
 
-	if (mysql_set_character_set(mysqlCon, "utf8") != 0)
+	if (mysql_set_character_set(mysqlCon, "utf8mb4") != 0)
 		show_error(__func__, __LINE__);
 
 	return true;

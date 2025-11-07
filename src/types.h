@@ -63,6 +63,7 @@ struct GSettings
 	string videoDb_TableVideo;
 	string videoDb_TableInfo;
 	string videoDb_TableVersion;
+	string mysqlHost;
 
 	/* download server */
 	string downloadServer[maxDownloadServerCount];
