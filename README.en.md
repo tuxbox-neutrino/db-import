@@ -107,6 +107,11 @@ docker run --rm \
 `config/importer` must contain `mv2mariadb.conf` and `pw_mariadb`. The data volume
 holds downloads/cache (~2 GB recommended). Works on amd64 PCs and arm64 Raspberry Pis.
 
+Set `mysqlHost=<hostname>` in `mv2mariadb.conf` to match your MariaDB server.
+If you rely on `--network host`, this is usually `localhost` or the actual IP.
+Within custom Docker networks (compose) the host name should match the service
+name (e.g. `mysqlHost=db`).
+
 ## Development & testing
 
 - `make clean && make` – rebuild

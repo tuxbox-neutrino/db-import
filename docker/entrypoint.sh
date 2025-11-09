@@ -26,4 +26,7 @@ else
   echo "[entrypoint] Warning: pw_mariadb not found in ${CONFIG_DIR} – proceeding without it." >&2
 fi
 
+ls -l "${CONFIG_DIR}" >&2
+ls -l "${BIN_DIR}" >&2
+
 exec "${BIN_DIR}/mv2mariadb" "$@"

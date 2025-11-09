@@ -112,6 +112,15 @@ Im `config/importer`-Ordner müssen `mv2mariadb.conf` und `pw_mariadb` liegen.
 Das Daten-Volume `data/importer` enthält Downloads und Zwischendateien (ca. 2 GB
 Freiraum einplanen). Gleiches Vorgehen funktioniert auf Raspberry Pi und PC.
 
+Wichtig: In `mv2mariadb.conf` muss `mysqlHost=<Hostname>` auf deinen MariaDB-
+Server zeigen. Bei `--network host` entspricht das normalerweise `localhost`
+oder deiner realen IP. Nutzt du ein Compose-Netz, trage dort den Service-Namen
+ein (z. B. `mysqlHost=db`).
+
+> Hinweis: `mediathek-net` steht exemplarisch für ein vorhandenes Docker-Netz
+> (z. B. Compose). Läuft MariaDB auf dem Host, verwende `--network host` oder
+> setze in `mv2mariadb.conf` den Parameter `mysqlHost=<IP/Hostname>` passend.
+> Für dauerhafte Container `--name mediathek-importer` setzen und `--rm` weglassen.
 ## Entwicklung & Tests
 
 - `make clean && make` – Neubau
