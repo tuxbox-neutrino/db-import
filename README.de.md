@@ -85,6 +85,33 @@ Zusätzliche Optionen:
 
 Eine vollständige Auflistung liefert `mv2mariadb --help`.
 
+## Container-Nutzung
+
+Das Docker-Image `dbt1/mediathek-importer:latest` steht für amd64 und arm64
+bereit:
+
+```bash
+docker pull dbt1/mediathek-importer:latest
+
+# Templates/Config initial anlegen
+docker run --rm \
+  -v $PWD/config/importer:/opt/importer/config \
+  -v $PWD/data/importer:/opt/importer/bin/dl \
+  --network mediathek-net \
+  dbt1/mediathek-importer --update
+
+# Regelmäßiger Import (z. B. via Cron)
+docker run --rm \
+  -v $PWD/config/importer:/opt/importer/config \
+  -v $PWD/data/importer:/opt/importer/bin/dl \
+  --network mediathek-net \
+  dbt1/mediathek-importer --cron-mode 120 --cron-mode-echo
+```
+
+Im `config/importer`-Ordner müssen `mv2mariadb.conf` und `pw_mariadb` liegen.
+Das Daten-Volume `data/importer` enthält Downloads und Zwischendateien (ca. 2 GB
+Freiraum einplanen). Gleiches Vorgehen funktioniert auf Raspberry Pi und PC.
+
 ## Entwicklung & Tests
 
 - `make clean && make` – Neubau

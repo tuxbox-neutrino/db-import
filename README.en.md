@@ -82,6 +82,31 @@ Useful CLI flags:
 
 Run `mv2mariadb --help` for the full option list.
 
+## Container usage
+
+Multi-arch images are available via Docker Hub:
+
+```bash
+docker pull dbt1/mediathek-importer:latest
+
+# bootstrap templates + config (once)
+docker run --rm \
+  -v $PWD/config/importer:/opt/importer/config \
+  -v $PWD/data/importer:/opt/importer/bin/dl \
+  --network mediathek-net \
+  dbt1/mediathek-importer --update
+
+# periodic import (e.g. cron/systemd)
+docker run --rm \
+  -v $PWD/config/importer:/opt/importer/config \
+  -v $PWD/data/importer:/opt/importer/bin/dl \
+  --network mediathek-net \
+  dbt1/mediathek-importer --cron-mode 120 --cron-mode-echo
+```
+
+`config/importer` must contain `mv2mariadb.conf` and `pw_mariadb`. The data volume
+holds downloads/cache (~2 GB recommended). Works on amd64 PCs and arm64 Raspberry Pis.
+
 ## Development & testing
 
 - `make clean && make` – rebuild
