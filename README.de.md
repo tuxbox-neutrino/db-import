@@ -97,11 +97,10 @@ Dieses Release ist als **v0.5.0** getaggt. Es enthält insbesondere die neue
 `mysqlHost`-Option, damit Container nicht zwingend `127.0.0.1` verwenden müssen.
 Wir folgen SemVer; Releases werden über `git tag -l` ersichtlich.
 
-Die Versionsnummer liegt zusätzlich in der Datei `VERSION`. Ein GitHub Workflow
-(`.github/workflows/tagging.yaml`) aktualisiert diese Datei mit Hilfe von
-`tagit.py` und legt automatisch Tags an, sobald Änderungen auf `master`
-eintreffen. Für einen manuellen Versionssprung genügt es, `VERSION="x.y.z"` zu
-ändern und zu pushen – der Workflow erzeugt anschließend den passenden Tag.
+Die Versionsnummer liegt zusätzlich in der Datei `VERSION`. Aktuell muss sie
+manuell gepflegt werden (`VERSION="x.y.z"` setzen, danach taggen). Der zuvor
+geplante automatische Workflow ist vorübergehend deaktiviert und kann später
+reaktiviert werden, sobald der Prozess stabil läuft.
 
 ## Support
 
