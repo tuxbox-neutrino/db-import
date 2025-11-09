@@ -94,6 +94,11 @@ Release **v0.5.0** introduces the configurable `mysqlHost`, allowing container
 setups to talk to non-local MariaDB hosts. We follow Semantic Versioning; all
 releases are available via `git tag -l`.
 
+Version numbers are kept in the `VERSION` file. A GitHub workflow
+(`.github/workflows/tagging.yaml`) leverages `tagit.py` to update the file and
+create tags automatically whenever changes land on `master`. To bump manually,
+edit `VERSION="x.y.z"` and push – the workflow will publish the matching tag.
+
 ## Support
 
 Issues and pull requests welcome: <https://github.com/tuxbox-neutrino/db-import>.

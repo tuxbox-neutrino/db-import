@@ -1,0 +1,53 @@
+name: Tagging Workflow
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/**'
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install GitPython
+          curl -o tagit.py https://raw.githubusercontent.com/dbt1/tagit/master/tagit.py
+          chmod +x tagit.py
+
+      - name: Verify tagit.py download
+        run: |
+          if [ ! -f tagit.py ]; then
+            echo "tagit.py was not downloaded!"
+            exit 1
+          fi
+
+      - name: Tagging
+        run: |
+          python tagit.py -f VERSION
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add VERSION
+          git commit -m "tagging: automatically updated version [skip ci]" || echo "No changes to commit"
+          git push
+          git push --tags
