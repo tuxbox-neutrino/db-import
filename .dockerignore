@@ -1,0 +1,13 @@
+.git
+.github
+build
+*.log
+*.tar
+*.tar.gz
+*.tar.xz
+*.zip
+vendor
+services
+return
+POST
+post
