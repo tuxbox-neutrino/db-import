@@ -4,6 +4,11 @@
 [MediathekView](https://mediathekview.de) herunterlädt, nach MariaDB importiert
 und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 
+> Du möchtest alles per Skript einrichten? Nutze das
+> [Quickstart-Skript](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
+> aus `mt-api-dev` (lokal: `services/mediathek-backend/vendor/mt-api-dev/scripts/quickstart.sh`).
+> Es zieht automatisch die Container und startet Importer + API.
+
 ## Was erledigt das Tool?
 
 - Lädt und pflegt automatisch die Liste der Download-Server.

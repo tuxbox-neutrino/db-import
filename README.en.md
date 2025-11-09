@@ -3,6 +3,10 @@
 `mv2mariadb` downloads the MediathekView movie list, converts it into MariaDB
 tables and serves as the data source for the Neutrino Mediathek plugin.
 
+> Need a turnkey setup? Run the [quickstart script](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
+> from `mt-api-dev` (also available locally under `services/mediathek-backend/vendor/mt-api-dev/scripts/quickstart.sh`)
+> and it will pull both containers and start importer + API automatically.
+
 ## Feature overview
 
 - Automatically maintains the download server list.
