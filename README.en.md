@@ -52,6 +52,11 @@ The binary will be placed under `build/mv2mariadb`. Use `make install
 DESTDIR=/opt/importer` if you want a staged directory layout similar to the
 Docker image.
 
+> **Version embedding**  
+> `git describe --tags` is automatically embedded into the binary and written to
+> the database tables (visible via the API). To force a specific number (e.g.
+> when building from a tarball) run `IMPORTER_VERSION=0.5.0 make`.
+
 ## Configuration
 
 - `config/mv2mariadb.conf` – download URLs, target schemas and the new

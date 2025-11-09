@@ -54,6 +54,11 @@ make -j$(nproc)
 Das Binary liegt danach unter `build/mv2mariadb`. Optional kannst du mit
 `make install DESTDIR=/opt/importer` eine Zielstruktur erzeugen.
 
+> **Version hinterlegen**  
+> Wie beim API-Projekt wird automatisch `git describe --tags` eingebettet und
+> später über die Datenbank bzw. das API sichtbar. Beim Bauen aus einem Tarball
+> kannst du per `IMPORTER_VERSION=0.5.0 make` eine feste Nummer setzen.
+
 ## Konfiguration
 
 - `config/mv2mariadb.conf` – enthält Download-URLs, Ziel-Datenbank und neue

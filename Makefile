@@ -34,6 +34,14 @@ EXTRA_LDFLAGS		?=
 EXTRA_INCLUDES		?= 
 EXTRA_LIBS		?= 
 
+IMPORTER_VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null)
+IMPORTER_VERSION := $(strip $(IMPORTER_VERSION))
+IMPORTER_VERSION := $(patsubst v%,%,$(IMPORTER_VERSION))
+ifeq ($(IMPORTER_VERSION),)
+IMPORTER_VERSION := 0.0.0
+endif
+EXTRA_CXXFLAGS		+= -DPROGVERSION=\"$(IMPORTER_VERSION)\"
+
 CXX			?= g++
 LD			?= g++
 STRIP			?= strip

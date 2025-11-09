@@ -20,7 +20,9 @@
 	Boston, MA  02110-1301, USA.
 */
 
-#define PROGVERSION "0.4.1"
+#ifndef PROGVERSION
+#define PROGVERSION "0.0.0"
+#endif
 #define DBVERSION "3.0"
 #define PROGNAME "mv2mariadb"
 #define DEFAULTXZ "mv-movielist.xz"
