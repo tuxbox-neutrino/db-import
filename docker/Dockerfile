@@ -49,6 +49,7 @@ RUN apt-get update && \
 
 RUN mkdir -p ${IMPORTER_HOME}/bin ${IMPORTER_HOME}/config ${IMPORTER_HOME}/log /opt/importer.dist/config
 COPY --from=build /opt/src/db-import/build/mv2mariadb ${IMPORTER_HOME}/bin/mv2mariadb
+COPY --from=build /opt/src/db-import/src/sql ${IMPORTER_HOME}/bin/sql
 COPY docker/entrypoint.sh /usr/local/bin/importer-entrypoint
 RUN chmod +x /usr/local/bin/importer-entrypoint
 WORKDIR ${IMPORTER_HOME}

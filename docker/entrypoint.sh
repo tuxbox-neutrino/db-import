@@ -18,4 +18,12 @@ if [[ ! -f "${CONFIG_DIR}/mv2mariadb.conf" ]]; then
   exit 1
 fi
 
+cp "${CONFIG_DIR}/mv2mariadb.conf" "${BIN_DIR}/mv2mariadb.conf"
+
+if [[ -f "${CONFIG_DIR}/pw_mariadb" ]]; then
+  cp "${CONFIG_DIR}/pw_mariadb" "${BIN_DIR}/pw_mariadb"
+else
+  echo "[entrypoint] Warning: pw_mariadb not found in ${CONFIG_DIR} – proceeding without it." >&2
+fi
+
 exec "${BIN_DIR}/mv2mariadb" "$@"
