@@ -8,7 +8,22 @@ tables and serves as the data source for the Neutrino Mediathek plugin.
 > It asks for the MariaDB credentials (or spins up its own `mariadb` container),
 > generates the importer/API configs and launches both containers automatically.
 
+## Table of Contents
+
+- [Feature overview](#feature-overview)
+- [Quickstart (Docker Compose)](#quickstart-docker-compose)
+- [Requirements (manual build)](#requirements-manual-build)
+- [Build](#build)
+- [Configuration](#configuration)
+- [Operation](#operation)
+- [Container usage](#container-usage)
+- [Development & testing](#development--testing)
+- [Versioning](#versioning)
+- [Support](#support)
+
 ## Feature overview
+
+Core capabilities include:
 
 - Automatically maintains the download server list.
 - Detects new MediathekView releases (full + diff lists).
@@ -17,6 +32,9 @@ tables and serves as the data source for the Neutrino Mediathek plugin.
 - Cron-friendly operation that only downloads when necessary.
 
 ## Quickstart (Docker Compose)
+
+When working inside `neutrino-make`, the bundled compose stack wires MariaDB,
+importer and API exactly like the real deployment.
 
 Use the stack in `services/mediathek-backend` of the `neutrino-make` repo:
 
@@ -32,6 +50,8 @@ setup.
 
 ## Requirements (manual build)
 
+Build-from-source prerequisites:
+
 - GCC or Clang, `make`
 - MariaDB Connector/C (`libmariadb-dev`)
 - libcurl, liblzma, libexpat, libpthread
@@ -45,6 +65,8 @@ sudo apt install build-essential pkg-config git libmariadb-dev \
 ```
 
 ## Build
+
+Compile the importer locally with:
 
 ```bash
 git clone https://github.com/tuxbox-neutrino/db-import.git
@@ -64,6 +86,8 @@ Docker image.
 
 ## Configuration
 
+The following files control runtime behaviour:
+
 - `config/mv2mariadb.conf` – download URLs, target schemas and the new
   `mysqlHost` option so containerised runs can reach the Compose DB host `db`.
 - `config/pw_mariadb` – `user:password`, copied to `bin/pw_mariadb` at runtime.
@@ -71,6 +95,8 @@ Docker image.
 - Working files and logs are stored in `bin/dl`.
 
 ## Operation
+
+Schedule the importer or run it manually with these common options:
 
 Typical cron entry (every 120 minutes, verbose output when updates occur):
 
@@ -88,6 +114,8 @@ Useful CLI flags:
 Run `mv2mariadb --help` for the full option list.
 
 ## Container usage
+
+Use the prebuilt Docker image when you prefer a containerised workflow:
 
 Multi-arch images are available via Docker Hub:
 
@@ -119,11 +147,16 @@ name (e.g. `mysqlHost=db`).
 
 ## Development & testing
 
+Developer helpers:
+
 - `make clean && make` – rebuild
 - `make format` – (WIP) formatter target
 - `./build/mv2mariadb --debug-print` – verbose importer logs
 
 ## Versioning
+
+We cut SemVer releases so the API and plugins can reason about the data source
+version.
 
 Release **v0.5.0** introduces the configurable `mysqlHost`, allowing container
 setups to talk to non-local MariaDB hosts. We follow Semantic Versioning; all

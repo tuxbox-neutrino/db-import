@@ -10,7 +10,22 @@ und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 > Es fragt die MariaDB-Zugangsdaten ab (oder startet eine eigene `mariadb`-Instanz),
 > erzeugt die nötigen Konfigurationsdateien und startet Importer + API automatisch.
 
+## Inhaltsverzeichnis
+
+- [Was erledigt das Tool?](#was-erledigt-das-tool)
+- [Schnellstart (Docker Compose)](#schnellstart-docker-compose)
+- [Voraussetzungen (manueller Build)](#voraussetzungen-manueller-build)
+- [Kompilieren](#kompilieren)
+- [Konfiguration](#konfiguration)
+- [Betrieb](#betrieb)
+- [Container-Nutzung](#container-nutzung)
+- [Entwicklung & Tests](#entwicklung--tests)
+- [Versionierung](#versionierung)
+- [Support](#support)
+
 ## Was erledigt das Tool?
+
+Die wichtigsten Funktionen im Überblick:
 
 - Lädt und pflegt automatisch die Liste der Download-Server.
 - Erkennt, ob eine neue MediathekView-Filmliste vorliegt (inkl. Diff-Listen).
@@ -20,6 +35,9 @@ und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 - Kann im Cron-Modus laufen und ruft nur dann neue Daten ab, wenn es nötig ist.
 
 ## Schnellstart (Docker Compose)
+
+Innerhalb von `neutrino-make` kannst du den mitgelieferten Compose-Stack nutzen,
+der MariaDB, Importer und API wie im Live-Betrieb verbindet.
 
 Im Repository `neutrino-make` liegt unter `services/mediathek-backend` ein
 fertiger Stack:
@@ -36,6 +54,8 @@ Neutrino-Installation zur Verfügung.
 
 ## Voraussetzungen (manueller Build)
 
+Für lokale Builds werden folgende Pakete benötigt:
+
 - GCC oder Clang, `make`
 - MariaDB Connector/C (`libmariadb-dev`)
 - libcurl, liblzma, libexpat, libpthread
@@ -49,6 +69,8 @@ sudo apt install build-essential pkg-config git libmariadb-dev \
 ```
 
 ## Kompilieren
+
+So baust du den Importer vor Ort:
 
 ```bash
 git clone https://github.com/tuxbox-neutrino/db-import.git
@@ -67,6 +89,8 @@ Das Binary liegt danach unter `build/mv2mariadb`. Optional kannst du mit
 
 ## Konfiguration
 
+Diese Dateien steuern das Laufzeitverhalten:
+
 - `config/mv2mariadb.conf` – enthält Download-URLs, Ziel-Datenbank und neue
   Option `mysqlHost`, damit Container z. B. die Compose-DB unter `db` erreichen.
 - `config/pw_mariadb` – `user:pass`, wird beim Start nach `bin/pw_mariadb`
@@ -75,6 +99,8 @@ Das Binary liegt danach unter `build/mv2mariadb`. Optional kannst du mit
 - Log-Dateien sowie Zwischenablagen landen unter `bin/dl`.
 
 ## Betrieb
+
+So lässt sich der Importer zeitgesteuert oder manuell ausführen:
 
 Typische Cron-Zeile (Import alle 2 Stunden, Ausgaben nur bei Updates):
 
@@ -92,6 +118,8 @@ Zusätzliche Optionen:
 Eine vollständige Auflistung liefert `mv2mariadb --help`.
 
 ## Container-Nutzung
+
+Für Docker-Setups stehen Multi-Arch-Images bereit:
 
 Das Docker-Image `dbt1/mediathek-importer:latest` steht für amd64 und arm64
 bereit:
@@ -129,11 +157,15 @@ ein (z. B. `mysqlHost=db`).
 > Für dauerhafte Container `--name mediathek-importer` setzen und `--rm` weglassen.
 ## Entwicklung & Tests
 
+Hilfreiche Targets für den Alltag:
+
 - `make clean && make` – Neubau
 - `make format` – (WIP) Code-Formatierung
 - `./build/mv2mariadb --debug-print` – Debug-Ausgabe aktivieren
 
 ## Versionierung
+
+Wir setzen auf SemVer, damit API und Plugin den Datenstand nachvollziehen können.
 
 Dieses Release ist als **v0.5.0** getaggt. Es enthält insbesondere die neue
 `mysqlHost`-Option, damit Container nicht zwingend `127.0.0.1` verwenden müssen.
