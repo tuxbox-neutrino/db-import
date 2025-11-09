@@ -4,8 +4,9 @@
 tables and serves as the data source for the Neutrino Mediathek plugin.
 
 > Need a turnkey setup? Run the [quickstart script](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
-> from `mt-api-dev` (also available locally under `services/mediathek-backend/vendor/mt-api-dev/scripts/quickstart.sh`)
-> and it will pull both containers and start importer + API automatically.
+> from `mt-api-dev` (also available locally under `services/mediathek-backend/vendor/mt-api-dev/scripts/quickstart.sh`).
+> It asks for the MariaDB credentials (or spins up its own `mariadb` container),
+> generates the importer/API configs and launches both containers automatically.
 
 ## Feature overview
 

@@ -7,7 +7,8 @@ und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 > Du möchtest alles per Skript einrichten? Nutze das
 > [Quickstart-Skript](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
 > aus `mt-api-dev` (lokal: `services/mediathek-backend/vendor/mt-api-dev/scripts/quickstart.sh`).
-> Es zieht automatisch die Container und startet Importer + API.
+> Es fragt die MariaDB-Zugangsdaten ab (oder startet eine eigene `mariadb`-Instanz),
+> erzeugt die nötigen Konfigurationsdateien und startet Importer + API automatisch.
 
 ## Was erledigt das Tool?
 
