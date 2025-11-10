@@ -134,6 +134,13 @@ docker run --rm \
   --network mediathek-net \
   dbt1/mediathek-importer --update
 
+# Ersten vollständigen Import erzwingen (füllt mediathek_1.*)
+docker run --rm \
+  -v $PWD/config/importer:/opt/importer/config \
+  -v $PWD/data/importer:/opt/importer/bin/dl \
+  --network mediathek-net \
+  dbt1/mediathek-importer --force-convert
+
 # Regelmäßiger Import (z. B. via Cron)
 docker run --rm \
   -v $PWD/config/importer:/opt/importer/config \
