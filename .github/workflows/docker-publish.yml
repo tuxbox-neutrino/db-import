@@ -1,10 +1,7 @@
 name: Docker Publish
 
 on:
-  push:
-    branches: [ master ]
-    tags:
-      - 'v*'
+  # Temporarily disable automatic Docker builds/pushes – run manually via workflow_dispatch.
   workflow_dispatch:
 
 env:
