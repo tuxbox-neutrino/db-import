@@ -22,7 +22,7 @@ time_t duration2time(string t)
 	struct tm tm;
 	memset(&tm, 0, sizeof(tm));
 	strptime(("1970-01-01 " + t).c_str(), "%F %T", &tm);
-	time_t ret = mktime(&tm) + 3600;
+	time_t ret = mktime(&tm);
 
 	return ret;
 }
@@ -58,7 +58,7 @@ int duration2sec(string t, string forceFormat)
 		cout << "[" << __func__ << ":" << __LINE__ << "] " << "Error parse time string \""<< t2 << "\", format: \""<< format <<"\"\n" << endl;
 		return 0;
 	}
-	return static_cast<int>(mktime(&tm)) + 3600;
+	return static_cast<int>(mktime(&tm));
 }
 
 time_t str2time(string format, string t)
@@ -66,7 +66,7 @@ time_t str2time(string format, string t)
 	struct tm tm;
 	memset(&tm, 0, sizeof(tm));
 	strptime(t.c_str(), format.c_str(), &tm);
-	time_t ret = mktime(&tm) + 3600;
+	time_t ret = mktime(&tm);
 
 	return ret;
 }
