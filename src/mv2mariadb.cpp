@@ -37,6 +37,8 @@
 #include <errno.h>
 #include <semaphore.h>
 #include <signal.h>
+#include <time.h>
+#include <cstdlib>
 
 #include <iostream>
 #include <fstream>
@@ -1083,6 +1085,12 @@ void sighandler (int signum)
 int main(int argc, char *argv[])
 {
 	g_mainInstance = NULL;
+
+	/* Ensure time conversions use Europe/Berlin timezone (matches MediathekView data). */
+	if (getenv("TZ") == NULL) {
+		setenv("TZ", "Europe/Berlin", 1);
+	}
+	tzset();
 
 	/* install sighandler */
 	signal(SIGTERM, sighandler);

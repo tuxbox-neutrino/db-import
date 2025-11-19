@@ -19,46 +19,53 @@
 
 time_t duration2time(string t)
 {
-	struct tm tm;
-	memset(&tm, 0, sizeof(tm));
-	strptime(("1970-01-01 " + t).c_str(), "%F %T", &tm);
-	time_t ret = mktime(&tm);
-
-	return ret;
+	return static_cast<time_t>(duration2sec(t));
 }
 
 /* For allowed format strings: see
  * www.cplusplus.com/reference/iomanip/put_time
  */
-int duration2sec(string t, string forceFormat)
+int duration2sec(string t, string /*forceFormat*/)
 {
-	struct tm tm;
-	memset(&tm, '\0', sizeof(struct tm));
-	string t1 = trim(t);
-	string t2 = "1970-01-01 " + t1;
-	istringstream iss(t2);
-	string format = "%Y-%m-%d ";
-	if (forceFormat.empty()) {
-		size_t len = t1.length();
-		if (len == 8)
-			format += "%H:%M:%S";
-		else if (len == 5)
-			format += "%M:%S";
-		else if (len == 2)
-			format += "%S";
-		else {
-			cout << "[" << __func__ << ":" << __LINE__ << "] " << "Error parse time string \""<< t1 << "\"\n" << endl;
+	string t1 = t;
+	t1 = trim(t1);
+	if (t1.empty())
+		return 0;
+
+	auto parsePart = [](const string &part) -> long {
+		char *end = NULL;
+		long val = strtol(part.c_str(), &end, 10);
+		if ((end == NULL) || (*end != '\0'))
 			return 0;
-		}
-	}
-	else
-		format += forceFormat;
-	iss >> get_time(&tm, format.c_str());
-	if (iss.fail()) {
-		cout << "[" << __func__ << ":" << __LINE__ << "] " << "Error parse time string \""<< t2 << "\", format: \""<< format <<"\"\n" << endl;
+		return val;
+	};
+
+	vector<string> parts = split(t1, ':');
+	long hours = 0;
+	long minutes = 0;
+	long seconds = 0;
+	if (parts.size() == 3) {
+		string ph = parts[0];
+		string pm = parts[1];
+		string ps = parts[2];
+		hours = parsePart(trim(ph));
+		minutes = parsePart(trim(pm));
+		seconds = parsePart(trim(ps));
+	} else if (parts.size() == 2) {
+		string pm = parts[0];
+		string ps = parts[1];
+		minutes = parsePart(trim(pm));
+		seconds = parsePart(trim(ps));
+	} else if (parts.size() == 1) {
+		string ps = parts[0];
+		seconds = parsePart(trim(ps));
+	} else {
 		return 0;
 	}
-	return static_cast<int>(mktime(&tm));
+	long total = hours * 3600 + minutes * 60 + seconds;
+	if (total < 0)
+		total = 0;
+	return static_cast<int>(total);
 }
 
 time_t str2time(string format, string t)
