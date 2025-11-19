@@ -6,7 +6,8 @@ und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 
 > Du möchtest alles per Skript einrichten? Nutze das
 > [Quickstart-Skript](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
-> aus `mt-api-dev` (lokal: `services/mediathek-backend/vendor/mt-api-dev/scripts/quickstart.sh`).
+> aus `mt-api-dev` (liegt im [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
+> Repository unter `vendor/mt-api-dev/scripts/quickstart.sh`).
 > Es fragt die MariaDB-Zugangsdaten ab (oder startet eine eigene `mariadb`-Instanz),
 > erzeugt die nötigen Konfigurationsdateien und startet Importer + API automatisch.
 
@@ -36,11 +37,9 @@ Die wichtigsten Funktionen im Überblick:
 
 ## Schnellstart (Docker Compose)
 
-Innerhalb von `neutrino-make` kannst du den mitgelieferten Compose-Stack nutzen,
-der MariaDB, Importer und API wie im Live-Betrieb verbindet.
-
-Im Repository `neutrino-make` liegt unter `services/mediathek-backend` ein
-fertiger Stack:
+Im [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
+Repo findest du einen fertigen Compose-Stack, der MariaDB, Importer und API wie
+im Live-Betrieb verbindet:
 
 ```bash
 make vendor                      # mt-api-dev & db-import klonen
