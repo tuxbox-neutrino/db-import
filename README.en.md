@@ -112,6 +112,8 @@ Useful CLI flags:
 - `--diff-mode` – use the differential list instead of the full one.
 - `--download-only` – skip SQL import.
 - `--update` – create template DB + default config and exit.
+- `--debug-channels <pattern>` – dump channel ↔ channelinfo mappings that match
+  the pattern (e.g. `--debug-channels ard`).
 
 Run `mv2mariadb --help` for the full option list.
 
@@ -160,9 +162,10 @@ Developer helpers:
 We cut SemVer releases so the API and plugins can reason about the data source
 version.
 
-Release **v0.5.0** introduces the configurable `mysqlHost`, allowing container
-setups to talk to non-local MariaDB hosts. We follow Semantic Versioning; all
-releases are available via `git tag -l`.
+Release **v0.2.5** introduces the configurable `mysqlHost`, allowing container
+setups to talk to non-local MariaDB hosts, and adds the optional
+`--debug-channels` helper. We follow Semantic Versioning; all releases are
+available via `git tag -l`.
 
 Version numbers are kept in the `VERSION` file. Update it manually (format
 `VERSION="x.y.z"`) before tagging/publishing. The previous automated workflow is

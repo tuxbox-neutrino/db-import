@@ -68,6 +68,7 @@ class CMV2Mysql
 		string defaultDiffXZ;
 		bool convertData;
 		bool forceConvertData;
+		string debugChannelPattern;
 		uint32_t dlSegmentSize;
 		int diffMode;
 

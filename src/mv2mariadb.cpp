@@ -106,6 +106,7 @@ void CMV2Mysql::Init()
 	g_debugPrint		= false;
 	multiQuery		= true;
 	downloadOnly		= false;
+	debugChannelPattern	= "";
 	createIndexes		= true;
 	loadServerlist		= false;
 	g_mvDate		= time(0);
@@ -312,6 +313,7 @@ void CMV2Mysql::printHelp()
 	printf("       --download-only	 => Download only (Don't convert\n");
 	printf("			    to sql database).\n");
 	printf("       --load-serverlist => Load new serverlist and exit.\n");
+	printf("       --debug-channels => Dump channel mapping for pattern (debug)\n");
 
 	printf("\n");
 	printf("  -d | --debug-print	 => Print debug info\n");
@@ -377,13 +379,14 @@ int CMV2Mysql::run(int argc, char *argv[])
 		{"update",		noParam,       NULL, '1'},
 		{"download-only",	noParam,       NULL, '2'},
 		{"load-serverlist",	noParam,       NULL, '3'},
+		{"debug-channels",	requiredParam, NULL, 'p'},
 		{"debug-print",		noParam,       NULL, 'd'},
 		{"version",		noParam,       NULL, 'v'},
 		{"help",		noParam,       NULL, 'h'},
 		{NULL,			0,             NULL,  0 }
 	};
 	int c, opt;
-	while ((opt = getopt_long(argc, argv, "e:fc:CD:n123dvh?", long_options, &c)) >= 0) {
+	while ((opt = getopt_long(argc, argv, "e:fc:CD:n123p:dvh?", long_options, &c)) >= 0) {
 		switch (opt) {
 			case 'e':
 				/* >=0 and <=24800 */
@@ -418,6 +421,9 @@ int CMV2Mysql::run(int argc, char *argv[])
 				break;
 			case '3':
 				loadServerlist = true;
+				break;
+			case 'p':
+				debugChannelPattern = static_cast<string>(optarg);
 				break;
 			case 'd':
 				g_debugPrint = true;
@@ -497,6 +503,9 @@ int CMV2Mysql::run(int argc, char *argv[])
 	csql->connectMysql();
 	csql->checkTemplateDB(templateDBFile);
 	parseDB();
+
+	if (!debugChannelPattern.empty())
+		csql->debugChannelMapping(debugChannelPattern);
 
 	return 0;
 }

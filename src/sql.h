@@ -101,6 +101,7 @@ class CSql
 		void setServerMultiStatementsOn__(const char* func, int line);
 		string getDefaultCharacterSet() { return dbDefaultCharacterSet; };
 		uint32_t checkEntryForUpdate(TVideoEntry* videoEntry);
+		bool debugChannelMapping(const string& pattern);
 
 	/* sql-common.cpp */
 	/* TODO: Separate class for shared sql functions */

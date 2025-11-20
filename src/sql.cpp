@@ -493,5 +493,35 @@ uint32_t CSql::checkEntryForUpdate(TVideoEntry* videoEntry)
 	return id_;
 }
 
+bool CSql::debugChannelMapping(const string& pattern)
+{
+	string likePattern = "%" + pattern + "%";
+	string sql = "";
+	sql += "SELECT v.channel, ci.name AS mapped, COUNT(*) AS cnt ";
+	sql += "FROM " + VIDEO_DB + "." + VIDEO_TABLE + " v ";
+	sql += "LEFT JOIN " + VIDEO_DB + "." + INFO_TABLE + " ci ON v.channelid = ci.id ";
+	sql += "WHERE LOWER(v.channel) LIKE LOWER(" + checkString(likePattern, 255) + ") ";
+	sql += "GROUP BY v.channel, ci.name ";
+	sql += "ORDER BY cnt DESC;";
+
+	if (!executeSingleQueryString(sql))
+		return false;
+
+	MYSQL_RES* result = mysql_store_result(mysqlCon);
+	if (result == NULL)
+		return false;
+
+	printf("[%s] Channel mapping for pattern \"%s\":\n", g_progName, pattern.c_str());
+	MYSQL_ROW row;
+	while ((row = mysql_fetch_row(result))) {
+		const char* src = (row[0] != NULL) ? row[0] : "";
+		const char* mapped = (row[1] != NULL) ? row[1] : "(null)";
+		const char* cnt = (row[2] != NULL) ? row[2] : "0";
+		printf("  %-30s -> %-30s (%s)\n", src, mapped, cnt);
+	}
+	mysql_free_result(result);
+	return true;
+}
+
 /* TODO: Separate class for shared sql functions */
 #include "sql-common.cpp"

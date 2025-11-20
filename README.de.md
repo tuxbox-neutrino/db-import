@@ -113,6 +113,8 @@ Zusätzliche Optionen:
 - `--diff-mode` – verarbeitet die Differenz-Datei statt der Vollversion.
 - `--download-only` – nur herunterladen, nicht importieren.
 - `--update` – erstellt Template-Datenbank und Standardkonfiguration.
+- `--debug-channels <Muster>` – gibt die Zuordnung channel ↔ channelinfo für
+  passende Sender aus (z. B. `--debug-channels ard`).
 
 Eine vollständige Auflistung liefert `mv2mariadb --help`.
 
@@ -173,9 +175,10 @@ Hilfreiche Targets für den Alltag:
 
 Wir setzen auf SemVer, damit API und Plugin den Datenstand nachvollziehen können.
 
-Dieses Release ist als **v0.5.0** getaggt. Es enthält insbesondere die neue
-`mysqlHost`-Option, damit Container nicht zwingend `127.0.0.1` verwenden müssen.
-Wir folgen SemVer; Releases werden über `git tag -l` ersichtlich.
+Dieses Release ist als **v0.2.5** getaggt. Es enthält insbesondere die neue
+`mysqlHost`-Option und die Debug-Hilfe `--debug-channels`, damit Container nicht
+zwingend `127.0.0.1` verwenden müssen. Wir folgen SemVer; Releases werden über
+`git tag -l` ersichtlich.
 
 Die Versionsnummer liegt zusätzlich in der Datei `VERSION`. Aktuell muss sie
 manuell gepflegt werden (`VERSION="x.y.z"` setzen, danach taggen). Der zuvor
