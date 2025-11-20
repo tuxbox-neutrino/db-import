@@ -497,11 +497,11 @@ bool CSql::debugChannelMapping(const string& pattern)
 {
 	string likePattern = "%" + pattern + "%";
 	string sql = "";
-	sql += "SELECT v.channel, ci.name AS mapped, COUNT(*) AS cnt ";
+	sql += "SELECT v.channel, ci.channel AS mapped, COUNT(*) AS cnt ";
 	sql += "FROM " + VIDEO_DB + "." + VIDEO_TABLE + " v ";
-	sql += "LEFT JOIN " + VIDEO_DB + "." + INFO_TABLE + " ci ON v.channelid = ci.id ";
+	sql += "LEFT JOIN " + VIDEO_DB + "." + INFO_TABLE + " ci ON v.channel = ci.channel ";
 	sql += "WHERE LOWER(v.channel) LIKE LOWER(" + checkString(likePattern, 255) + ") ";
-	sql += "GROUP BY v.channel, ci.name ";
+	sql += "GROUP BY v.channel, ci.channel ";
 	sql += "ORDER BY cnt DESC;";
 
 	if (!executeSingleQueryString(sql))

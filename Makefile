@@ -155,6 +155,7 @@ LIBS		+= -llzma
 LIBS		+= -lcurl
 LIBS		+= -lpthread
 LIBS		+= -lexpat
+LIBS		+= -lc
 LIBS		+= $(EXTRA_LIBS)
 
 LDFLAGS		 = $(LIBS)
@@ -182,7 +183,7 @@ build/src/%.o: src/%.cpp
 $(BUILD_DIR)/$(PROGNAME): $(PROG_OBJS)
 	@if ! test -d $$(dirname $@); then mkdir -p $$(dirname $@); fi;
 	@if test "$(quiet)" = "@"; then echo "$(LNKX) *.o => $@"; fi;
-	$(quiet)$(LD) $(PROG_OBJS) $(LDFLAGS) -o $@
+	$(quiet)$(CXX) $(PROG_OBJS) $(LDFLAGS) -o $@
 
 install: all
 	@if test "$(DESTDIR)" = ""; then \

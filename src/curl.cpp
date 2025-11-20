@@ -26,7 +26,10 @@
 #include "common/helpers.h"
 #include "curl.h"
 
-
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 size_t CCurl::CurlWriteToString(void *ptr, size_t size, size_t nmemb, void *data)
 {
 	if (size * nmemb > 0) {
@@ -48,7 +51,11 @@ int CCurl::CurlProgressFunc(void *p, curl_off_t dltotal, curl_off_t dlnow, curl_
 
 	double dlSpeed;
 	long responseCode = 0;
+#if defined(CURLINFO_SPEED_DOWNLOAD_T)
+	curl_easy_getinfo(_pgd->curl, CURLINFO_SPEED_DOWNLOAD_T, &dlSpeed);
+#else
 	curl_easy_getinfo(_pgd->curl, CURLINFO_SPEED_DOWNLOAD, &dlSpeed);
+#endif
 	curl_easy_getinfo(_pgd->curl, CURLINFO_RESPONSE_CODE, &responseCode);
 
 	uint32_t MUL = 0x7FFF;
@@ -267,7 +274,11 @@ int CCurl::CurlDownload(string url,
 	if (!silent) {
 		double dsize, dtime;
 		char *dredirect=NULL, *deffektive=NULL;
-		curl_easy_getinfo(curl_handle, CURLINFO_SIZE_DOWNLOAD, &dsize);
+#if defined(CURLINFO_SIZE_DOWNLOAD_T)
+				curl_easy_getinfo(curl_handle, CURLINFO_SIZE_DOWNLOAD_T, &dsize);
+#else
+				curl_easy_getinfo(curl_handle, CURLINFO_SIZE_DOWNLOAD, &dsize);
+#endif
 		curl_easy_getinfo(curl_handle, CURLINFO_TOTAL_TIME, &dtime);
 		CURLcode res1 = curl_easy_getinfo(curl_handle, CURLINFO_EFFECTIVE_URL, &deffektive);
 		CURLcode res2 = curl_easy_getinfo(curl_handle, CURLINFO_REDIRECT_URL, &dredirect);
@@ -317,5 +328,9 @@ int CCurl::CurlDownload(string url,
 
 //printf("\nContentLength: %ld\n \n", ContentLength);
 
-	return PRIV_CURL_OK;
+return PRIV_CURL_OK;
 }
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

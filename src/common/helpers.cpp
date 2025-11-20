@@ -229,11 +229,15 @@ const char *cstr_replace(const char *search, const char *replace, const char *te
 	while (count--) {
 		ins = strstr(text, search);
 		len_front = ins - text;
-		tmp = strncpy(tmp, text, len_front) + len_front;
-		tmp = strncpy(tmp, replace, len_replace) + len_replace;
+		memcpy(tmp, text, len_front);
+		tmp += len_front;
+		memcpy(tmp, replace, len_replace);
+		tmp += len_replace;
 		text += len_front + len_search; // move to next "end of search"
 	}
-	strncpy(tmp, text, strlen(text));
+	size_t remaining = strlen(text);
+	memcpy(tmp, text, remaining);
+	tmp[remaining] = '\0';
 	return result;
 }
 
