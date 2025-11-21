@@ -20,7 +20,6 @@ jobs:
         with:
           repository: ${{ env.BACKEND_REPO }}
           path: mediathek-backend
-          token: ${{ secrets.MEDIATHEK_BACKEND_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
