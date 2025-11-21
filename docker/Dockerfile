@@ -24,8 +24,7 @@ WORKDIR /opt/src/db-import
 
 COPY . /opt/src/db-import
 
-RUN python3 docker/patch_sources.py && \
-    cp doc/config.mk.sample config.mk && \
+RUN cp doc/config.mk.sample config.mk && \
     sed -i 's/USE_COMPILER\t\t= CLANG/USE_COMPILER\t\t= GCC/' config.mk && \
     sed -i 's/COMPILER_VER\t= clang50/COMPILER_VER\t= gcc/' config.mk && \
     sed -i 's/COMPILER_VER\t= gcc7/COMPILER_VER\t= gcc/' config.mk && \
