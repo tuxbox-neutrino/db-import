@@ -1,13 +1,12 @@
 # mv2mariadb – MediathekView to MariaDB converter
 
-`mv2mariadb` downloads the MediathekView movie list, converts it into MariaDB
-tables and serves as the data source for the Neutrino Mediathek plugin.
+`mv2mariadb` pulls the MediathekView movie list and writes it into MariaDB. It
+feeds the Neutrino Mediathek plugin.
 
-> Need a turnkey setup? Run the [quickstart script](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
-> from `mt-api-dev` (bundled in the [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
-> repo under `vendor/mt-api-dev/scripts/quickstart.sh`).
-> It asks for the MariaDB credentials (or spins up its own `mariadb` container),
-> generates the importer/API configs and launches both containers automatically.
+Quickest path: run the [quickstart script](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
+from the [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
+repo (`vendor/mt-api-dev/scripts/quickstart.sh`). It asks for DB credentials (or
+starts its own MariaDB), writes the configs and starts importer + API.
 
 ## Table of Contents
 
@@ -22,23 +21,11 @@ tables and serves as the data source for the Neutrino Mediathek plugin.
 - [Versioning](#versioning)
 - [Support](#support)
 
-## Feature overview
-
-Core capabilities include:
-
-- Automatically maintains the download server list.
-- Detects new MediathekView releases (full + diff lists).
-- Downloads, unpacks and imports JSON data into MariaDB schemas
-  (`mediathek_1`, temporary tables, template DB).
-- Cron-friendly operation that only downloads when necessary.
-
 ## Quickstart (Docker Compose)
 
-When working inside `neutrino-make`, the bundled compose stack wires MariaDB,
-importer and API exactly like the real deployment.
-
-Use the compose stack from the [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
-repository:
+Use the compose stack from the
+[mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
+repository (imports everything into MariaDB and exposes the API):
 
 ```bash
 make vendor                      # clone mt-api-dev & db-import
@@ -47,24 +34,22 @@ docker-compose run --rm importer --update
 docker-compose run --rm importer # run full conversion
 ```
 
-The resulting tables can be consumed by the API container or any local Neutrino
-setup.
+Afterwards the API (port 18080) and any Neutrino client can read the database.
 
-## Requirements (manual build)
-
-Build-from-source prerequisites:
-
-- GCC or Clang, `make`
-- MariaDB Connector/C (`libmariadb-dev`)
-- libcurl, liblzma, libexpat, libpthread
-- rapidjson headers
-
-Example for Debian/Ubuntu:
+## Build it yourself (Debian/Ubuntu)
 
 ```bash
-sudo apt install build-essential pkg-config git libmariadb-dev \
-  libcurl4-openssl-dev liblzma-dev libexpat1-dev rapidjson-dev
+sudo apt-get update
+sudo apt-get install build-essential pkg-config git \
+  libmariadb-dev libcurl4-openssl-dev liblzma-dev libexpat1-dev rapidjson-dev
+
+git clone https://github.com/tuxbox-neutrino/db-import.git
+cd db-import
+cp doc/config.mk.sample config.mk
+make -j$(nproc)
 ```
+
+Binary: `build/mv2mariadb`. Optional: `make install DESTDIR=/opt/importer`.
 
 ## Build
 
@@ -86,38 +71,30 @@ Docker image.
 > the database tables (visible via the API). To force a specific number (e.g.
 > when building from a tarball) run `IMPORTER_VERSION=0.5.0 make`.
 
-## Configuration
+## Runtime config (must be present)
 
-The following files control runtime behaviour:
+- `config/mv2mariadb.conf`: download URLs, target schemas, `mysqlHost`.
+- `config/pw_mariadb`: `user:password` with CREATE/ALTER rights.
+- Working files/logs: `bin/dl`.
 
-- `config/mv2mariadb.conf` – download URLs, target schemas and the new
-  `mysqlHost` option so containerised runs can reach the Compose DB host `db`.
-- `config/pw_mariadb` – `user:password`, copied to `bin/pw_mariadb` at runtime.
-  Use a MariaDB account with CREATE/ALTER privileges on the target schemas.
-- Working files and logs are stored in `bin/dl`.
+## How to run
 
-## Operation
+Common options:
 
-Schedule the importer or run it manually with these common options:
+- `--update` – create template DB + default config and exit.
+- `--force-convert` – re-import even if the list is up to date.
+- `--diff-mode` – use the diff list instead of the full list.
+- `--download-only` – just download, no SQL import.
+- `--debug-channels <pattern>` – print channel ↔ channelinfo mappings for a
+  pattern (e.g. `--debug-channels ard`) when troubleshooting mislabelled
+  senders.
 
-Typical cron entry (every 120 minutes, verbose output when updates occur):
-
+Example cron (every 2h, log only on change):
 ```
 */120 * * * * /opt/importer/bin/mv2mariadb --cron-mode 120 --cron-mode-echo >>/var/log/mv2mariadb.log 2>&1
 ```
 
-Useful CLI flags:
-
-- `--force-convert` – re-import even if the list is up to date.
-- `--diff-mode` – use the differential list instead of the full one.
-- `--download-only` – skip SQL import.
-- `--update` – create template DB + default config and exit.
-- `--debug-channels <pattern>` – dump channel ↔ channelinfo mappings that match
-  the pattern (e.g. `--debug-channels ard`). Use this when investigating
-  reported mismatches between list entries and their assigned channel; the
-  output makes visible which `channelinfo` entry a sender currently maps to.
-
-Run `mv2mariadb --help` for the full option list.
+`mv2mariadb --help` lists all flags.
 
 ## Container usage
 

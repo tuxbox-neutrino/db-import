@@ -82,43 +82,33 @@ Das Binary liegt danach unter `build/mv2mariadb`. Optional kannst du mit
 `make install DESTDIR=/opt/importer` eine Zielstruktur erzeugen.
 
 > **Version hinterlegen**  
-> Wie beim API-Projekt wird automatisch `git describe --tags` eingebettet und
-> später über die Datenbank bzw. das API sichtbar. Beim Bauen aus einem Tarball
-> kannst du per `IMPORTER_VERSION=0.5.0 make` eine feste Nummer setzen.
+> Standard: `git describe --tags`. Beim Bauen aus einem Tarball kannst du per
+> `IMPORTER_VERSION=0.2.5 make` eine feste Nummer setzen.
 
-## Konfiguration
+## Konfiguration (Pflicht)
 
-Diese Dateien steuern das Laufzeitverhalten:
-
-- `config/mv2mariadb.conf` – enthält Download-URLs, Ziel-Datenbank und neue
-  Option `mysqlHost`, damit Container z. B. die Compose-DB unter `db` erreichen.
-- `config/pw_mariadb` – `user:pass`, wird beim Start nach `bin/pw_mariadb`
-  kopiert. Verwende einen Benutzer mit CREATE/ALTER-Rechten auf den relevanten
-  Schemas.
-- Log-Dateien sowie Zwischenablagen landen unter `bin/dl`.
+- `config/mv2mariadb.conf`: Download-URLs, Ziel-Datenbank, `mysqlHost`.
+- `config/pw_mariadb`: `user:pass` mit CREATE/ALTER-Rechten.
+- Logs/Zwischenablagen: `bin/dl`.
 
 ## Betrieb
 
-So lässt sich der Importer zeitgesteuert oder manuell ausführen:
+Nützliche Optionen:
 
-Typische Cron-Zeile (Import alle 2 Stunden, Ausgaben nur bei Updates):
+- `--update` – erstellt Template-DB + Standardkonfig und beendet sich.
+- `--force-convert` – importiert auch, wenn die Liste aktuell ist.
+- `--diff-mode` – nutzt die Diff-Liste statt der Vollversion.
+- `--download-only` – nur herunterladen, kein SQL-Import.
+- `--debug-channels <Muster>` – zeigt channel ↔ channelinfo für passende Sender
+  (z. B. `--debug-channels ard`), hilfreich bei falsch zugeordneten Sendern.
+
+Typische Cron-Zeile (alle 2 Stunden, Meldung nur bei Änderungen):
 
 ```
 */120 * * * * /opt/importer/bin/mv2mariadb --cron-mode 120 --cron-mode-echo >>/var/log/mv2mariadb.log 2>&1
 ```
 
-Zusätzliche Optionen:
-
-- `--force-convert` – erzwingt einen Re-Import, auch wenn die Liste aktuell ist.
-- `--diff-mode` – verarbeitet die Differenz-Datei statt der Vollversion.
-- `--download-only` – nur herunterladen, nicht importieren.
-- `--update` – erstellt Template-Datenbank und Standardkonfiguration.
-- `--debug-channels <Muster>` – gibt die Zuordnung channel ↔ channelinfo für
-  passende Sender aus (z. B. `--debug-channels ard`). Praktisch, wenn gemeldet
-  wird, dass ein Eintrag dem falschen Sender zugeordnet ist – die Ausgabe zeigt,
-  welche `channelinfo`-Zeile derzeit verwendet wird.
-
-Eine vollständige Auflistung liefert `mv2mariadb --help`.
+`mv2mariadb --help` listet alle Flags.
 
 ## Container-Nutzung
 
