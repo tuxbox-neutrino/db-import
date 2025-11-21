@@ -114,7 +114,9 @@ Zusätzliche Optionen:
 - `--download-only` – nur herunterladen, nicht importieren.
 - `--update` – erstellt Template-Datenbank und Standardkonfiguration.
 - `--debug-channels <Muster>` – gibt die Zuordnung channel ↔ channelinfo für
-  passende Sender aus (z. B. `--debug-channels ard`).
+  passende Sender aus (z. B. `--debug-channels ard`). Praktisch, wenn gemeldet
+  wird, dass ein Eintrag dem falschen Sender zugeordnet ist – die Ausgabe zeigt,
+  welche `channelinfo`-Zeile derzeit verwendet wird.
 
 Eine vollständige Auflistung liefert `mv2mariadb --help`.
 

@@ -113,7 +113,9 @@ Useful CLI flags:
 - `--download-only` – skip SQL import.
 - `--update` – create template DB + default config and exit.
 - `--debug-channels <pattern>` – dump channel ↔ channelinfo mappings that match
-  the pattern (e.g. `--debug-channels ard`).
+  the pattern (e.g. `--debug-channels ard`). Use this when investigating
+  reported mismatches between list entries and their assigned channel; the
+  output makes visible which `channelinfo` entry a sender currently maps to.
 
 Run `mv2mariadb --help` for the full option list.
 
