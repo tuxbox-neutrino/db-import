@@ -11,6 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: db-import
+
+      - name: Checkout mediathek-backend
+        uses: actions/checkout@v4
+        with:
+          repository: tuxbox-neutrino/mediathek-backend
+          path: mediathek-backend
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -24,10 +32,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Prepare backend tree
+        run: |
+          rm -rf mediathek-backend/vendor/db-import
+          mkdir -p mediathek-backend/vendor/db-import
+          rsync -a --exclude='.git' db-import/ mediathek-backend/vendor/db-import/
+
       - name: Build and push importer image
+        working-directory: mediathek-backend
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 \
             -t ${{ env.IMAGE_NAME }}:${{ github.ref_name }} \
             -t ${{ env.IMAGE_NAME }}:latest \
-            -f docker/Dockerfile \
+            -f docker/importer/Dockerfile \
             --push .
