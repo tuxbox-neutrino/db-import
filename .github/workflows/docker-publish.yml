@@ -5,6 +5,7 @@ on:
 
 env:
   IMAGE_NAME: dbt1/mediathek-importer
+  BACKEND_REPO: tuxbox-neutrino/mediathek-backend
 
 jobs:
   build:
@@ -17,8 +18,9 @@ jobs:
       - name: Checkout mediathek-backend
         uses: actions/checkout@v4
         with:
-          repository: tuxbox-neutrino/mediathek-backend
+          repository: ${{ env.BACKEND_REPO }}
           path: mediathek-backend
+          token: ${{ secrets.MEDIATHEK_BACKEND_TOKEN }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -38,11 +40,17 @@ jobs:
           mkdir -p mediathek-backend/vendor/db-import
           rsync -a --exclude='.git' db-import/ mediathek-backend/vendor/db-import/
 
+      - name: Read importer version
+        id: importer_version
+        run: |
+          VERSION=$(grep -Po '(?<=VERSION=")[^"]+' db-import/VERSION)
+          echo "value=${VERSION}" >> $GITHUB_OUTPUT
+
       - name: Build and push importer image
         working-directory: mediathek-backend
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 \
-            -t ${{ env.IMAGE_NAME }}:${{ github.ref_name }} \
+            -t ${{ env.IMAGE_NAME }}:${{ steps.importer_version.outputs.value }} \
             -t ${{ env.IMAGE_NAME }}:latest \
             -f docker/importer/Dockerfile \
             --push .
