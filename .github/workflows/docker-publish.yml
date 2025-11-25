@@ -42,7 +42,7 @@ jobs:
       - name: Read importer version
         id: importer_version
         run: |
-          VERSION=$(grep -Po '(?<=VERSION=")[^"]+' db-import/VERSION)
+          VERSION=$(git -C db-import describe --tags --long --abbrev=7)
           echo "value=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Build and push importer image
