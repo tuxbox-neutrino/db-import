@@ -3,6 +3,10 @@
 `mv2mariadb` pulls the MediathekView movie list and writes it into MariaDB. It
 feeds the Neutrino Mediathek plugin.
 
+> Need help installing or running the backend? Follow the
+> [mediathek-backend README](../../README.en.md). The file you are reading now
+> focuses on mv2mariadb itself (build options, configuration, developer notes).
+
 Quickest path: run the [quickstart script](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
 from the [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
 repo (`vendor/mt-api-dev/scripts/quickstart.sh`). It asks for DB credentials (or
@@ -11,7 +15,6 @@ starts its own MariaDB), writes the configs and starts importer + API.
 ## Table of Contents
 
 - [Feature overview](#feature-overview)
-- [Quickstart (Docker Compose)](#quickstart-docker-compose)
 - [Requirements (manual build)](#requirements-manual-build)
 - [Build](#build)
 - [Configuration](#configuration)
@@ -20,21 +23,6 @@ starts its own MariaDB), writes the configs and starts importer + API.
 - [Development & testing](#development--testing)
 - [Versioning](#versioning)
 - [Support](#support)
-
-## Quickstart (Docker Compose)
-
-Use the compose stack from the
-[mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
-repository (imports everything into MariaDB and exposes the API):
-
-```bash
-make vendor                      # clone mt-api-dev & db-import
-docker-compose up -d db          # start MariaDB
-docker-compose run --rm importer --update
-docker-compose run --rm importer # run full conversion
-```
-
-Afterwards the API (port 18080) and any Neutrino client can read the database.
 
 ## Build it yourself (Debian/Ubuntu)
 

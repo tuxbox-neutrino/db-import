@@ -4,17 +4,13 @@
 [MediathekView](https://mediathekview.de) herunterlädt, nach MariaDB importiert
 und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 
-> Du möchtest alles per Skript einrichten? Nutze das
-> [Quickstart-Skript](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
-> aus `mt-api-dev` (liegt im [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
-> Repository unter `vendor/mt-api-dev/scripts/quickstart.sh`).
-> Es fragt die MariaDB-Zugangsdaten ab (oder startet eine eigene `mariadb`-Instanz),
-> erzeugt die nötigen Konfigurationsdateien und startet Importer + API automatisch.
+> Für Installation und täglichen Betrieb verweise auf die
+> [README des mediathek-backend](../../README.de.md). Hier geht es um
+> mv2mariadb selbst – also Build, Konfiguration und Optionen.
 
 ## Inhaltsverzeichnis
 
 - [Was erledigt das Tool?](#was-erledigt-das-tool)
-- [Schnellstart (Docker Compose)](#schnellstart-docker-compose)
 - [Voraussetzungen (manueller Build)](#voraussetzungen-manueller-build)
 - [Kompilieren](#kompilieren)
 - [Konfiguration](#konfiguration)
@@ -34,22 +30,6 @@ Die wichtigsten Funktionen im Überblick:
 - Erstellt Indexe und hält mehrere Ziel-Schemas aktuell (`mediathek_1`,
   temporäre Tabellen, Template-Datenbank).
 - Kann im Cron-Modus laufen und ruft nur dann neue Daten ab, wenn es nötig ist.
-
-## Schnellstart (Docker Compose)
-
-Im [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
-Repo findest du einen fertigen Compose-Stack, der MariaDB, Importer und API wie
-im Live-Betrieb verbindet:
-
-```bash
-make vendor                      # mt-api-dev & db-import klonen
-docker-compose up -d db          # MariaDB starten
-docker-compose run --rm importer --update
-docker-compose run --rm importer # kompletter Import
-```
-
-Die erzeugten Tabellen stehen danach dem API-Container oder einer lokalen
-Neutrino-Installation zur Verfügung.
 
 ## Voraussetzungen (manueller Build)
 
