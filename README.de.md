@@ -1,11 +1,11 @@
 # mv2mariadb – MediathekView nach MariaDB
 
-`mv2mariadb` ist ein Kommandozeilenwerkzeug, das die Filmliste von
+`mv2mariadb` (`db-importer`) ist ein Kommandozeilenwerkzeug, das die Filmliste von
 [MediathekView](https://mediathekview.de) herunterlädt, nach MariaDB importiert
 und damit die Datenbasis für das Neutrino-Mediathek-Plugin bereitstellt.
 
-> Für Installation und täglichen Betrieb verweise auf die
-> [README des mediathek-backend](../../README.de.md). Hier geht es um
+> Für Installation und täglichen Betrieb sei auf die
+> [README's des mediathek-backend](../../README.de.md) verwiesen. Hier geht es um
 > mv2mariadb selbst – also Build, Konfiguration und Optionen.
 
 ## Inhaltsverzeichnis

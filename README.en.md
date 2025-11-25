@@ -7,9 +7,10 @@ feeds the Neutrino Mediathek plugin.
 > [mediathek-backend README](../../README.en.md). The file you are reading now
 > focuses on mv2mariadb itself (build options, configuration, developer notes).
 
-Quickest path: run the [quickstart script](https://github.com/tuxbox-neutrino/mt-api-dev/blob/master/scripts/quickstart.sh)
+Quickest path: run the
+[quickstart script](https://github.com/tuxbox-neutrino/mediathek-backend/blob/master/scripts/quickstart.sh)
 from the [mediathek-backend](https://github.com/tuxbox-neutrino/mediathek-backend)
-repo (`vendor/mt-api-dev/scripts/quickstart.sh`). It asks for DB credentials (or
+repo (`scripts/quickstart.sh`). It asks for DB credentials (or
 starts its own MariaDB), writes the configs and starts importer + API.
 
 ## Table of Contents
