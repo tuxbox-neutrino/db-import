@@ -307,6 +307,10 @@ void CMV2Mysql::printHelp()
 	printf("  -C | --cron-mode-echo	 => Output message during --cron-mode to the log\n");
 	printf("			    (Default: no output)\n");
 	printf("  -D | --diff-mode	 => Use difference list instead of the complete movie list\n");
+	printf("       where <n> can be:\n");
+	printf("         0 = no difference mode (full list, default)\n");
+	printf("         1 = normal difference mode (basic changes)\n");
+	printf("         2 = extended difference mode (detailed changes)\n");
 	printf("  -n | --no-indexes	 => Don't create indexes for database\n");
 	printf("       --update		 => Create new config file and\n");
 	printf("			    new template database, then exit.\n");
@@ -403,8 +407,8 @@ int CMV2Mysql::run(int argc, char *argv[])
 				cronModeEcho = true;
 				break;
 			case 'D':
-				/* >=1 and <=2 */
-				diffMode = max(min(atoi(optarg), 2), 1);
+				/* clamp between 0 (off) and 2 (extended) */
+				diffMode = max(min(atoi(optarg), 2), 0);
 				break;
 			case 'n':
 				createIndexes = false;
