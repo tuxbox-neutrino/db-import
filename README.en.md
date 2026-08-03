@@ -78,10 +78,19 @@ Common options:
   pattern (e.g. `--debug-channels ard`) when troubleshooting mislabelled
   senders.
 
-Example cron (every 2h, log only on change):
+Example cron (hourly invocation, import at most every 2h):
 ```
-*/120 * * * * /opt/importer/bin/mv2mariadb --cron-mode 120 --cron-mode-echo >>/var/log/mv2mariadb.log 2>&1
+0 * * * * /opt/importer/bin/mv2mariadb --cron-mode 120 --cron-mode-echo >>/var/log/mv2mariadb.log 2>&1
 ```
+
+`--cron-mode` does not schedule anything; it only blocks downloads for the
+given time after the last one — cron sets the pace. If cron runs more often,
+`mv2mariadb` simply exits without importing.
+
+Deliberately running cron more often than the block is more robust than
+matching the two: with `0 */2 * * *` and `--cron-mode 120`, a delay of a few
+seconds is enough to trigger the block and postpone the import by another
+full cycle.
 
 `mv2mariadb --help` lists all flags.
 

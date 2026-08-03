@@ -82,11 +82,20 @@ Nützliche Optionen:
 - `--debug-channels <Muster>` – zeigt channel ↔ channelinfo für passende Sender
   (z. B. `--debug-channels ard`), hilfreich bei falsch zugeordneten Sendern.
 
-Typische Cron-Zeile (alle 2 Stunden, Meldung nur bei Änderungen):
+Typische Cron-Zeile (stündlicher Aufruf, Import frühestens alle 2 Stunden):
 
 ```
-*/120 * * * * /opt/importer/bin/mv2mariadb --cron-mode 120 --cron-mode-echo >>/var/log/mv2mariadb.log 2>&1
+0 * * * * /opt/importer/bin/mv2mariadb --cron-mode 120 --cron-mode-echo >>/var/log/mv2mariadb.log 2>&1
 ```
+
+`--cron-mode` plant nichts, sondern sperrt nur den Download für die angegebene
+Zeit nach dem letzten Abruf — den Takt gibt Cron vor. Läuft Cron häufiger,
+beendet sich `mv2mariadb` einfach ohne Import.
+
+Cron dabei bewusst engmaschiger zu setzen als die Sperre ist robuster, als
+beide gleich zu wählen: Bei `0 */2 * * *` mit `--cron-mode 120` genügt eine
+Verzögerung von Sekunden, damit die Sperre greift und der Import erst zum
+übernächsten Termin läuft.
 
 `mv2mariadb --help` listet alle Flags.
 
