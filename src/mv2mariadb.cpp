@@ -959,7 +959,11 @@ bool CMV2Mysql::parseDB()
 		csql->setServerMultiStatementsOn();
 	}
 	videoInfo.push_back(videoInfoEntry);
-	string itq = csql->createInfoTableQuery(&videoInfo, csql->getTableEntries(VIDEO_DB, g_settings.videoDb_TableVideo), diffMode);
+	/* Count in the database that was actually written. In full import mode the
+	   rows still live in the temporary database and are only swapped into
+	   VIDEO_DB by renameDB() further down, so counting VIDEO_DB here yields
+	   the previous import's size - or 0 on a first run. */
+	string itq = csql->createInfoTableQuery(&videoInfo, csql->getTableEntries(usedDB, g_settings.videoDb_TableVideo), diffMode);
 	csql->executeMultiQueryString(itq);
 	csql->executeSingleQueryString("COMMIT;");
 	csql->executeSingleQueryString("SET autocommit = 1;");
